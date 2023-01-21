@@ -1,22 +1,34 @@
 /**
  * This is an educational project in Kotlin. This is a program that takes some
  * piece of a text and makes some predefined string formatting to it. Such as
- * trims extra spaces, puts a dot at the end of a sentence, puts a tab symbol
+ * trims extra spaces, puts a dot at the end of a sentence, puts a tab character
  * before a paragraph and so on. Makes some addition measurement such as counts
- * symbols, words, sentences, paragraphs.
+ * characters, words, sentences, paragraphs.
  *
  * 21.01.2023
  * version 0.0.0
  */
 
-// What symbol use when compiling sentence from words
-const val WORD_SEPARATOR: String  = "\n"
+// What character use when compiling sentence from words
+const val WORD_SEPARATOR: String  = " "
+// What character use when splitting whole text into sentences
+// LineEndedByDot
+val SENTENCE_SEPARATOR: Regex = Regex("(?<=\\.)")
 
 /**
- * Returns the amount of [words], i.e. the size of given array
+ * Returns the amount of words in given text
  */
-fun countWords(words: Array<String>): Int {
+fun countWords(wholeText: String): Int {
+    val words: List<String> = wholeText.split(WORD_SEPARATOR)
     return words.size
+}
+
+/**
+ * Splits a whole piece of a text into separated sentences using dot character
+ * as a delimiter.
+ */
+fun splitByDot(wholeText: String): List<String> {
+    return wholeText.split(SENTENCE_SEPARATOR)
 }
 
 /**
@@ -26,17 +38,27 @@ fun splitIntoParagraphs(words: Array<String>): String {
     return words.joinToString(separator = WORD_SEPARATOR)
 }
 
-fun main(args: Array<String>) {
-    val amountOfWords: Int = countWords(args)
-    val formattedText: String
-    val lineAboutSize: String
-
-    lineAboutSize = when (amountOfWords) {
+/**
+ * Get line about amount of words given us as an program input arguments
+ */
+fun getLineAboutSize(amountOfWords: Int): String {
+    val lineAboutSize: String = when (amountOfWords) {
         0 -> "Array is empty"
         else -> "The size of array is: $amountOfWords"
     }
 
-    formattedText = splitIntoParagraphs(args)
+    return lineAboutSize
+}
+
+fun main(args: Array<String>) {
+    val wholeText: String = args.joinToString(separator = WORD_SEPARATOR)
+    val amountOfWords: Int = countWords(wholeText)
+    val lineAboutSize: String = getLineAboutSize(amountOfWords)
+    val separateSentences: List<String> = splitByDot(wholeText)
+
     println(lineAboutSize)
-    println("Program arguments: $formattedText")
+
+    for (sentence in separateSentences) {
+        println(sentence)
+    }
 }
