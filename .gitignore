@@ -3,3 +3,5 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+src/main/resources/formatted.txt
+src/main/resources/unformatted.txt
