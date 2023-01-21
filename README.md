@@ -10,7 +10,7 @@ It also makes some addition measurement such as counts symbols, words, sentences
 1. Learn how to work with String type (Concatenate, Split, Trim, Subtract) [version 0.0.1]
 2. How to work with input and output [version 0.0.2]
 3. How to work with filesystem (Read files, write files) [version 0.0.3]
-4. 
+4. How to work with JSON [version 0.0.4]
 XX. Create a simple web application on Heroku and host it there.
 
 # Known problems to solve
