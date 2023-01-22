@@ -44,6 +44,7 @@ fun splitIntoParagraphs(words: Array<String>): String {
 fun getLineAboutSize(amountOfWords: Int): String {
     val lineAboutSize: String = when (amountOfWords) {
         0 -> "Array is empty"
+        1 -> "Interesting that when you split an empty string you'll get an array with only element which is empty string"
         else -> "The size of array is: $amountOfWords"
     }
 
@@ -51,7 +52,8 @@ fun getLineAboutSize(amountOfWords: Int): String {
 }
 
 fun main(args: Array<String>) {
-    val wholeText: String = args.joinToString(separator = WORD_SEPARATOR)
+    val stdInLine: String? = readLine()
+    val wholeText: String = if (stdInLine != null) stdInLine.toString() else ""
     val amountOfWords: Int = countWords(wholeText)
     val lineAboutSize: String = getLineAboutSize(amountOfWords)
     val separateSentences: List<String> = splitByDot(wholeText)
