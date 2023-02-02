@@ -8,8 +8,10 @@
  * 02.02.2023
  * version 0.0.0
  */
+import app.datasource.TextDataSource
+import app.datasource.WholeTextDataSource
 import app.model.TextData
-import app.model.WholeText
+import app.model.WholeTextData
 
 
 // What character use when compiling sentence from words
@@ -76,28 +78,27 @@ fun trimWhiteSpaces(separatedSentences: List<String>): List<String> {
 /**
  * TODO: `dataObject` could be an instance of Any class which implements property `text` type String
  */
-fun businessLogic(dataObject: TextData): List<String> {
+fun businessLogic(dataObject: TextData): TextData {
     val wholeText: String = dataObject.text
     val amountOfWords: Int = countWords(wholeText)
     val lineAboutSize: String = getLineAboutSize(amountOfWords)
     val separatedSentences: List<String> = splitByDot(wholeText)
     val trimmedSeparatedSentences: List<String> = trimWhiteSpaces(separatedSentences)
+    val trimmedSingleLine: String = trimmedSeparatedSentences.joinToString("\n")
+    val formattedData: TextData = WholeTextData(text = trimmedSingleLine)
     println(lineAboutSize)
 
-    return trimmedSeparatedSentences
+    return formattedData
 }
 
 fun main(args: Array<String>) {
     // Input data
-    val stdInLine: String? = readLine()
-    val wholeText: String = if (stdInLine != null) stdInLine.toString() else ""
-    val wholeTextDataObject: WholeText = WholeText(text = wholeText)
+    val textLoader: TextDataSource = WholeTextDataSource()
+    val unformattedText: TextData = textLoader.loadText()
 
     // Business logic
-    val separateSentences = businessLogic(wholeTextDataObject)
+    val formattedText: TextData = businessLogic(unformattedText)
 
     // Output data
-    for (sentence in separateSentences) {
-        println(sentence)
-    }
+    textLoader.saveText(formattedText)
 }

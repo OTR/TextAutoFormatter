@@ -1,4 +1,5 @@
-import app.model.*
+import app.model.TextData
+import app.model.WholeTextData
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvFileSource
 import kotlin.test.assertEquals
@@ -12,15 +13,15 @@ class MainKtTest {
 
     @ParameterizedTest
     @CsvFileSource(
-        resources = ["/testData1_split_by_dot.csv",],
+        resources = ["/testData1_split_by_dot.csv"],
         numLinesToSkip = 1,
         delimiter = ';'
     )
     fun testBusinessLogic(input: String, expected: String) {
         // when
-        val testData: TextData = WholeText(text = input)
-        val funOutput: List<String> = businessLogic(testData)
-        val actual: String = funOutput.joinToString("\n")
+        val testData: TextData = WholeTextData(text = input)
+        val formattedText: TextData = businessLogic(testData)
+        val actual: String = formattedText.text
         // then
         assertEquals(expected, actual)
     }
