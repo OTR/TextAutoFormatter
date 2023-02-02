@@ -1,5 +1,6 @@
 import app.model.TextData
 import app.model.WholeTextData
+import app.service.basictextprocessor.BasicTextProcessor
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvFileSource
 import kotlin.test.assertEquals
@@ -20,7 +21,7 @@ class MainKtTest {
     fun testBusinessLogic(input: String, expected: String) {
         // when
         val testData: TextData = WholeTextData(text = input)
-        val formattedText: TextData = businessLogic(testData)
+        val formattedText: TextData = BasicTextProcessor().main(textData = testData)
         val actual: String = formattedText.text
         // then
         assertEquals(expected, actual)
