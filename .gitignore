@@ -20,3 +20,4 @@ out/
 ### test resources ###
 src/main/resources/formatted.txt
 src/main/resources/unformatted.txt
+src/test/resources/test_samples/*
