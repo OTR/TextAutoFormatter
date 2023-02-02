@@ -5,7 +5,7 @@
  * before a paragraph and so on. Makes some addition measurement such as counts
  * characters, words, sentences, paragraphs.
  *
- * 21.01.2023
+ * 02.02.2023
  * version 0.0.0
  */
 
@@ -51,15 +51,44 @@ fun getLineAboutSize(amountOfWords: Int): String {
     return lineAboutSize
 }
 
-fun main(args: Array<String>) {
-    val stdInLine: String? = readLine()
-    val wholeText: String = if (stdInLine != null) stdInLine.toString() else ""
+/**
+ * Get rid of empty strings and trim extra white spaces at the beginning.
+ */
+fun trimWhiteSpaces(separatedSentences: List<String>): List<String> {
+    val trimmedSentences: MutableList<String> = emptyList<String>().toMutableList()
+
+    separatedSentences.forEachIndexed { index, sentence ->
+        if (sentence.isNotBlank()) {
+            if (sentence.startsWith(" ")) {
+                trimmedSentences.add(sentence.trimStart())
+            } else {
+                trimmedSentences.add(sentence)
+            }
+        }
+    }
+
+    return trimmedSentences.toList()
+}
+
+fun businessLogic(wholeText: String): List<String> {
     val amountOfWords: Int = countWords(wholeText)
     val lineAboutSize: String = getLineAboutSize(amountOfWords)
-    val separateSentences: List<String> = splitByDot(wholeText)
-
+    val separatedSentences: List<String> = splitByDot(wholeText)
+    val trimmedSeparatedSentences: List<String> = trimWhiteSpaces(separatedSentences)
     println(lineAboutSize)
 
+    return trimmedSeparatedSentences
+}
+
+fun main(args: Array<String>) {
+    // Input data
+    val stdInLine: String? = readLine()
+    val wholeText: String = if (stdInLine != null) stdInLine.toString() else ""
+
+    // Business logic
+    val separateSentences = businessLogic(wholeText)
+
+    // Output data
     for (sentence in separateSentences) {
         println(sentence)
     }
