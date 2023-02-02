@@ -8,6 +8,9 @@
  * 02.02.2023
  * version 0.0.0
  */
+import app.model.TextData
+import app.model.WholeText
+
 
 // What character use when compiling sentence from words
 const val WORD_SEPARATOR: String  = " "
@@ -70,7 +73,11 @@ fun trimWhiteSpaces(separatedSentences: List<String>): List<String> {
     return trimmedSentences.toList()
 }
 
-fun businessLogic(wholeText: String): List<String> {
+/**
+ * TODO: `dataObject` could be an instance of Any class which implements property `text` type String
+ */
+fun businessLogic(dataObject: TextData): List<String> {
+    val wholeText: String = dataObject.text
     val amountOfWords: Int = countWords(wholeText)
     val lineAboutSize: String = getLineAboutSize(amountOfWords)
     val separatedSentences: List<String> = splitByDot(wholeText)
@@ -84,9 +91,10 @@ fun main(args: Array<String>) {
     // Input data
     val stdInLine: String? = readLine()
     val wholeText: String = if (stdInLine != null) stdInLine.toString() else ""
+    val wholeTextDataObject: WholeText = WholeText(text = wholeText)
 
     // Business logic
-    val separateSentences = businessLogic(wholeText)
+    val separateSentences = businessLogic(wholeTextDataObject)
 
     // Output data
     for (sentence in separateSentences) {

@@ -1,3 +1,4 @@
+import app.model.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvFileSource
 import kotlin.test.assertEquals
@@ -17,7 +18,8 @@ class MainKtTest {
     )
     fun testBusinessLogic(input: String, expected: String) {
         // when
-        val funOutput: List<String> = businessLogic(input)
+        val testData: TextData = WholeText(text = input)
+        val funOutput: List<String> = businessLogic(testData)
         val actual: String = funOutput.joinToString("\n")
         // then
         assertEquals(expected, actual)
