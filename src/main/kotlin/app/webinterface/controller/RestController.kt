@@ -1,5 +1,6 @@
 package app.webinterface.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -34,6 +35,14 @@ class RestController {
 
     companion object {
         private const val baseTextUrl = "/text"
+        private val objectMapper: ObjectMapper = jacksonObjectMapper()
+
+        /**
+         * Serialize Any object to valid JSON
+         */
+        private fun toJson(value: Any): String {
+            return objectMapper.writeValueAsString(value)
+        }
     }
 
     @PostMapping(path = ["$baseTextUrl/new"])
@@ -54,7 +63,7 @@ class RestController {
             ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(jacksonObjectMapper().writeValueAsString(""))
+                .body(toJson("Text Entity with ID: $id not found"))
         } else {
             ResponseEntity
                 .ok()
@@ -72,9 +81,16 @@ class RestController {
     }
 
     @DeleteMapping(path = ["$baseTextUrl/{id}"])
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteTextEntityById(@PathVariable("id") id: Int): Unit {
-        textService.deleteById(id)
-        return Unit
+    fun deleteTextEntityById(@PathVariable("id") id: Int): ResponseEntity<String> {
+        val retrievedTextEntity = textService.deleteById(id)
+        return if (retrievedTextEntity == null) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                toJson("Text Entity with ID: $id not found")
+            )
+        } else {
+            ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                toJson("Text Entity with ID: $id deleted")
+            )
+        }
     }
 }

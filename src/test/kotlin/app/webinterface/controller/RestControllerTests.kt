@@ -175,12 +175,15 @@ class RestControllerTests {
             // THEN | Expect that there is no entity by the given ID
             //        and database is empty
             .andExpect { status { isNoContent() } }
+            .andExpect { content {
+                jsonPath("\$") { value("Text Entity with ID: $textId deleted") }
+            } }
         mockMvc.get("$baseTextUrl/$textId")
             .andDo { print() }
             .andExpect { status { isNotFound() } }
             .andExpect { content { contentType(MediaType.APPLICATION_JSON) } }
             .andExpect { content {
-                jsonPath("\$") {value("")}
+                jsonPath("\$") {value("Text Entity with ID: $textId not found")}
             }}
     }
 }

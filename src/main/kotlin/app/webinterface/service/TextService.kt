@@ -1,6 +1,7 @@
 package app.webinterface.service
 
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.stereotype.Service
 import app.webinterface.model.TextEntity
@@ -24,7 +25,7 @@ interface ITextService {
 
     fun updateById(id: Int, updatedTextEntity: TextEntity): TextEntity
 
-    fun deleteById(id: Int): Unit
+    fun deleteById(id: Int): Unit?
 }
 
 @Service
@@ -53,8 +54,12 @@ class TextService(var textRepository: TextRepository): ITextService {
         return textRepository.save(updatedTextEntity)
     }
 
-    override fun deleteById(id: Int): Unit {
-        textRepository.deleteById(id)
-        return Unit
+    override fun deleteById(id: Int): Unit? {
+        return try{
+            textRepository.deleteById(id)
+            Unit
+        } catch (e: EmptyResultDataAccessException) {
+            null
+        }
     }
 }
