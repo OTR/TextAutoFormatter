@@ -1,5 +1,7 @@
 package app.webinterface.service
 
+import jakarta.persistence.EntityNotFoundException
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.stereotype.Service
 import app.webinterface.model.TextEntity
 import app.webinterface.repository.TextRepository
@@ -16,7 +18,7 @@ interface ITextService {
 
     fun create(testEntity: TextEntity): TextEntity
 
-    fun getById(id: Int): TextEntity
+    fun getById(id: Int): TextEntity?
 
     fun getAll(): List<TextEntity>
 
@@ -31,8 +33,15 @@ class TextService(var textRepository: TextRepository): ITextService {
         return textRepository.save(testEntity)
     }
 
-    override fun getById(id: Int): TextEntity {
-        return textRepository.getReferenceById(id)
+    override fun getById(id: Int): TextEntity? {
+        return try {
+            textRepository.getReferenceById(id)
+
+        } catch (e: EntityNotFoundException) {
+            null
+        } catch (e: JpaObjectRetrievalFailureException) {
+            null
+        }
     }
 
     override fun getAll(): List<TextEntity> {
@@ -44,8 +53,8 @@ class TextService(var textRepository: TextRepository): ITextService {
         return textRepository.save(updatedTextEntity)
     }
 
-    override fun deleteById(id: Int) {
-        return textRepository.deleteById(id)
+    override fun deleteById(id: Int): Unit {
+        textRepository.deleteById(id)
+        return Unit
     }
-
 }

@@ -1,12 +1,13 @@
 package app.webinterface.model
 
+import java.io.Serializable
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class TextEntity(): ITextEntity {
+class TextEntity(): ITextEntity, Serializable {
 
     constructor(id: Int, unformattedText: String): this() {
         this.id = id

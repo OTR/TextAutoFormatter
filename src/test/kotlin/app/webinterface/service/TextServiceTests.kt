@@ -1,7 +1,8 @@
 package app.webinterface.service
 
 import jakarta.persistence.EntityNotFoundException
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.tuple
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -43,7 +44,7 @@ class TextServiceTests {
         // WHEN
         val retrievedTextSample = textService.getById(textId)
         // THEN
-        assertThat(retrievedTextSample.unformattedText).isEqualTo(unformattedText)
+        assertThat(retrievedTextSample?.unformattedText).isEqualTo(unformattedText)
 
         // VERIFY THAT WAS HIT ONCE
     }
@@ -64,7 +65,7 @@ class TextServiceTests {
         // WHEN
         val retrievedTextSample = textService.getById(textId)
         // THEN
-        assertThat(retrievedTextSample.unformattedText).isEqualTo(unformattedText)
+        assertThat(retrievedTextSample?.unformattedText).isEqualTo(unformattedText)
     }
 
     @Test
@@ -113,7 +114,7 @@ class TextServiceTests {
         // WHEN
         textService.updateById(textId, modifiedTextSample)
         // THEN
-        val retrievedTextSample: TextEntity = textService.getById(textId)
+        val retrievedTextSample: TextEntity? = textService.getById(textId)
         assertThat(retrievedTextSample).extracting(
             "id", "unformattedText", "stageOneText", "handFormattedText", "posted"
         ).contains(
@@ -141,8 +142,7 @@ class TextServiceTests {
         // WHEN
         textService.deleteById(textId)
         // THEN
-        assertThatExceptionOfType(JpaObjectRetrievalFailureException::class.java).isThrownBy {
-            textService.getById(textId)
-        }.withMessage("Unable to find task.model.TextEntity with id $textId")
+        val response = textService.getById(textId)
+        assertThat(response).isNull()
     }
 }
