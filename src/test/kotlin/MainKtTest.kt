@@ -1,9 +1,9 @@
 import app.model.TextData
 import app.model.WholeTextData
 import app.service.basictextprocessor.BasicTextProcessor
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvFileSource
-import kotlin.test.assertEquals
 
 
 /**

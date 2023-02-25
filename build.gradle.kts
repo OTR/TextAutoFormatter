@@ -1,25 +1,33 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.21"
+    id("org.springframework.boot") version "3.0.2"
+    id("io.spring.dependency-management") version "1.1.0"
+    kotlin("jvm") version "1.7.22"
+    kotlin("plugin.spring") version "1.7.22"
+    kotlin("plugin.jpa") version "1.7.22"
     application
 }
 
-group = "org.example"
+group = ""
 version = "0.0.0"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.+")
-    testImplementation(kotlin("test"))
-    // Use the Kotlin JUnit 5 integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    // Use the JUnit 5 integration.
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    runtimeOnly("com.h2database:h2")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.test {
@@ -27,7 +35,10 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
+    }
 }
 
 application {
