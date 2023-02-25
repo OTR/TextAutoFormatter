@@ -1,5 +1,7 @@
 package app.webinterface.controller
 
+import app.webinterface.model.TextEntity
+import app.webinterface.service.TextService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,18 +16,16 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import app.webinterface.model.TextEntity
-import app.webinterface.service.TextService
 import java.io.Serializable
 
 /**
  * GET / return greeting message
- * GET /text/all return all texts
- * GET /text/{id} return a text by the given ID
- * POST /text/new create a new text with fields supplied as JSON in request body
- * PUT /text/{id} update a text by the given ID with fields supplied as JSON
+ * GET /api/text/all return all texts
+ * GET /api/text/{id} return a text by the given ID
+ * POST /api/text/new create a new text with fields supplied as JSON in request body
+ * PUT /api/text/{id} update a text by the given ID with fields supplied as JSON
  *                in request body
- * DELETE /text/{id} delete a text by the given ID
+ * DELETE /api/text/{id} delete a text by the given ID
  */
 @RestController
 class RestController {
@@ -34,7 +34,7 @@ class RestController {
     private lateinit var textService: TextService
 
     companion object {
-        private const val baseTextUrl = "/text"
+        private const val baseApiUrl = "/api/text"
         private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
         /**
@@ -45,18 +45,18 @@ class RestController {
         }
     }
 
-    @PostMapping(path = ["$baseTextUrl/new"])
+    @PostMapping(path = ["$baseApiUrl/new"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createNewTextEntity(@RequestBody newTextEntity: TextEntity): TextEntity {
         return textService.create(newTextEntity)
     }
 
-    @GetMapping(path = ["$baseTextUrl/all"])
+    @GetMapping(path = ["$baseApiUrl/all"])
     fun getAllTextEntities(): List<TextEntity> {
         return textService.getAll()
     }
 
-    @GetMapping(path = ["$baseTextUrl/{id}"])
+    @GetMapping(path = ["$baseApiUrl/{id}"])
     fun getTextEntityById(@PathVariable("id") id: Int): ResponseEntity<Serializable> {
         val retrievedTextEntity = textService.getById(id)
         return if(retrievedTextEntity == null) {
@@ -71,7 +71,7 @@ class RestController {
         }
     }
 
-    @PutMapping(path = ["$baseTextUrl/{id}"])
+    @PutMapping(path = ["$baseApiUrl/{id}"])
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun updateTextEntityById(
         @PathVariable("id") id: Int,
@@ -80,7 +80,7 @@ class RestController {
         return textService.updateById(id, updatedTextEntity)
     }
 
-    @DeleteMapping(path = ["$baseTextUrl/{id}"])
+    @DeleteMapping(path = ["$baseApiUrl/{id}"])
     fun deleteTextEntityById(@PathVariable("id") id: Int): ResponseEntity<String> {
         val retrievedTextEntity = textService.deleteById(id)
         return if (retrievedTextEntity == null) {

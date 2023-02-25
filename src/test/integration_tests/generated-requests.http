@@ -1,27 +1,27 @@
 # These tests are for IntelliJ IDEA's builtin HTTP Client
 
-### POST /text/new | create a new text with fields supplied as JSON in request body
-POST http://localhost:{{port}}/text/new
+### POST /api/text/new | create a new text with fields supplied as JSON in request body
+POST http://localhost:{{port}}/{{baseApiUrl}}/new
 Content-Type: application/json
 
 {
   "unformattedText": "{{unformattedText}}"
 }
 
-### GET /text/{id} | return a text by the given ID
-GET http://localhost:{{port}}/text/{{id}}
+### GET /api/text/{id} | return a text by the given ID
+GET http://localhost:{{port}}/{{baseApiUrl}}/{{id}}
 
-### GET /text/all | return all texts
-GET http://localhost:{{port}}/text/all
+### GET /api/text/all | return all texts
+GET http://localhost:{{port}}/{{baseApiUrl}}/all
 
-### PUT /text/{id} |update a text by the given ID
+### PUT /api/text/{id} |update a text by the given ID
 ###                 with fields supplied as JSON in request body
-PUT http://localhost:{{port}}/text/{{id}}
+PUT http://localhost:{{port}}/{{baseApiUrl}}/{{id}}
 Content-Type: application/json
 
 {
   "unformattedText": "{{modifiedUnformattedText}}"
 }
 
-### DELETE /text/{id} delete a text by the given ID
-DELETE http://localhost:{{port}}/text/{{id}}
+### DELETE /api/text/{id} delete a text by the given ID
+DELETE http://localhost:{{port}}/{{baseApiUrl}}/{{id}}
